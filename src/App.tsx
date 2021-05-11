@@ -3,6 +3,7 @@ import React from 'react'
 import { Grid, Box, ThemeProvider } from '@material-ui/core'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import { theme } from './styles/theme'
+import { NewNote } from './pages/admin/notes/NewNote'
 
 const App: React.VFC = () => {
   return (
@@ -16,17 +17,11 @@ const App: React.VFC = () => {
               justify="flex-start"
               alignItems="flex-start"
             >
-              <Grid item xs={3}>
+              <Grid item xs={6}>
                 <Link to="/">Home</Link>
               </Grid>
-              <Grid item xs={3}>
-                <Link to="/about">About</Link>
-              </Grid>
-              <Grid item xs={3}>
-                <Link to="/sign_in">SignIn</Link>
-              </Grid>
-              <Grid item xs={3}>
-                <Link to="/articles">Articles</Link>
+              <Grid item xs={6}>
+                <Link to="/admin/notes/new">ノートを作成</Link>
               </Grid>
             </Grid>
 
@@ -38,18 +33,10 @@ const App: React.VFC = () => {
             >
               <Grid item xs={12}>
                 <Switch>
-                  <Route path="/">
-                    <div>Home</div>
+                  <Route path="/admin/notes/new">
+                    <NewNote />
                   </Route>
-                  <Route path="/about">
-                    <div>About</div>
-                  </Route>
-                  <Route path="/sign_in">
-                    <div>SignIn</div>
-                  </Route>
-                  <Route path="/articles">
-                    <div>Articles</div>
-                  </Route>
+                  <Route path="/"></Route>
                 </Switch>
               </Grid>
             </Grid>
