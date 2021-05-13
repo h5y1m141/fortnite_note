@@ -5,6 +5,7 @@ export const NewNote: React.VFC = () => {
   const onSubmit = () => {
     console.log('create note')
   }
+
   return (
     <>
       <NewNoteTemplate onSubmit={onSubmit} />
