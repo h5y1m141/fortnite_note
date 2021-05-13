@@ -1,7 +1,7 @@
 import firebase from '../../Firebase'
-import { Note } from '../models'
+import { NoteContent } from '../models'
 
-export const createNote = async (data: any) => {
+export const createNote = async (data: NoteContent) => {
   const response = await firebase.firestore().collection('notes').add({
     title: 'test',
     note: data,
