@@ -1,0 +1,24 @@
+name: Deploy
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+
+jobs:
+  merge:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    env:
+      FORTNITE_NOTE_ADMIN_SDK: ${{ secrets.FORTNITE_NOTE_ADMIN_SDK }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: deploy to Firebase Hosting
+        if: github.event.pull_request.merged == true
+        run: |
+          yarn run deploy --token=${{ secrets.FIREBASE_TOKEN }}
