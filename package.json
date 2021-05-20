@@ -30,7 +30,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "yarn run build && firebase deploy --only hosting,functions"
+    "build_functions": "cd functions && npm install && npm run build",
+    "deploy": "yarn run build && yarn run build_functions && firebase deploy --only hosting,functions"
   },
   "eslintConfig": {
     "extends": [
