@@ -1,4 +1,5 @@
 import green from '@material-ui/core/colors/green'
+import blueGrey from '@material-ui/core/colors/blueGrey'
 import { createMuiTheme } from '@material-ui/core'
 
 export const theme = createMuiTheme({
@@ -8,8 +9,8 @@ export const theme = createMuiTheme({
       contrastText: '#ffffff',
     },
     secondary: {
-      main: green[300],
-      contrastText: '#ffffff',
+      main: blueGrey[100],
+      contrastText: '#222222',
     },
   },
   typography: {
