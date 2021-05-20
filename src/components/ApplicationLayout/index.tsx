@@ -20,7 +20,7 @@ export const ApplicationLayout: React.VFC<Props> = ({ children }) => {
         }}
       >
         <div className={classes.drawer}>
-          <Link className={classes.link} to="/admin/notes/new">
+          <Link className={classes.link} to="/admin/notes/list">
             <ListItem button>ノート一覧</ListItem>
           </Link>
           <Link className={classes.link} to="/admin/notes/new">

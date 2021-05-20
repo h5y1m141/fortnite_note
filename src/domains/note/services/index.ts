@@ -1,5 +1,5 @@
 import firebase from '../../Firebase'
-import { NoteContent } from '../models'
+import { NoteContent, PageData, detectPageSummary } from '../models'
 
 export const createNote = async (data: NoteContent, uid: string) => {
   const response = await firebase
@@ -12,4 +12,25 @@ export const createNote = async (data: NoteContent, uid: string) => {
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     })
   return response
+}
+
+export const fetchNotes = async (uid: string) => {
+  const noteReference = await firebase
+    .firestore()
+    .collection(`notes/${uid}/pages`)
+
+  const snapshot = await noteReference.get()
+  if (snapshot.empty) {
+    return []
+  }
+
+  const notes = snapshot.docs.map((doc: any) => {
+    const note = doc.data() as PageData
+    return {
+      ...note,
+      id: doc.id,
+      pageSummary: detectPageSummary(note.note),
+    }
+  })
+  return notes
 }
