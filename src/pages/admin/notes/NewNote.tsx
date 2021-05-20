@@ -1,23 +1,25 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
 import { NewNoteTemplate } from '../../../templates/admin/notes/NewNoteTemplate'
 import { createNote } from '../../../domains/note/services'
 import { NoteContent } from '../../../domains/note/models'
-import { anonymousLogin } from '../../../domains/user/services'
+import { UserStateContext } from '../../../components/UserStateContext'
 
 export const NewNote: React.VFC = () => {
+  const [isNoteCreated, setIsNoteCreated] = useState(false)
+  const [isNoteCreateionFailed, setIsNoteCreateionFailed] = useState(false)
+  const [state] = useContext(UserStateContext)
   const onSubmit = async (data: NoteContent) => {
-    const response = await anonymousLogin()
-    if (response && response.user) {
-      const user = response.user
-      const note = await createNote(data, user.uid)
-      console.log(note)
-      console.log('done')
-    }
+    const note = await createNote(data, state.userID)
+    note ? setIsNoteCreated(true) : setIsNoteCreateionFailed(true)
   }
 
   return (
     <>
-      <NewNoteTemplate onSubmit={onSubmit} />
+      <NewNoteTemplate
+        onSubmit={onSubmit}
+        isNoteCreated={isNoteCreated}
+        isNoteCreateionFailed={isNoteCreateionFailed}
+      />
     </>
   )
 }

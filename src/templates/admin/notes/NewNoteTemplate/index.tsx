@@ -1,15 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, SyntheticEvent, useEffect } from 'react'
 import { convertFromRaw, convertToRaw, EditorState } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
-
-import { Grid, Button, makeStyles, Box } from '@material-ui/core'
+import { Grid, Button, makeStyles, Box, Snackbar } from '@material-ui/core'
+import MuiAlert from '@material-ui/lab/Alert'
 
 type Props = {
   onSubmit: (data: any) => void
+  isNoteCreated: boolean
+  isNoteCreateionFailed: boolean
 }
 
-export const NewNoteTemplate: React.VFC<Props> = ({ onSubmit }) => {
+export const NewNoteTemplate: React.VFC<Props> = ({
+  onSubmit,
+  isNoteCreated,
+  isNoteCreateionFailed,
+}) => {
   const classes = useStyles()
   const initialData = convertFromRaw({
     entityMap: {},
@@ -17,8 +23,15 @@ export const NewNoteTemplate: React.VFC<Props> = ({ onSubmit }) => {
   })
   const initialState = EditorState.createWithContent(initialData)
   const [editorState, setEditorState] = useState(initialState)
+  const [successOpen, setSuccessOpen] = useState(isNoteCreated)
+  const [failOpen, setFailOpen] = useState(isNoteCreateionFailed)
+
   const onChange = (value: EditorState) => {
     setEditorState(value)
+  }
+  const handleClose = (event: SyntheticEvent<any, Event>, reason: any) => {
+    setSuccessOpen(false)
+    setFailOpen(false)
   }
   const onHandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -26,9 +39,28 @@ export const NewNoteTemplate: React.VFC<Props> = ({ onSubmit }) => {
     onSubmit(rawEditorData)
   }
 
+  useEffect(() => {
+    setSuccessOpen(isNoteCreated)
+    setFailOpen(isNoteCreateionFailed)
+  }, [isNoteCreated, isNoteCreateionFailed])
+
   return (
     <>
       <h3>新規ノート作成</h3>
+      <Snackbar
+        open={successOpen}
+        autoHideDuration={3000}
+        onClose={handleClose}
+      >
+        <MuiAlert elevation={6} variant="filled">
+          登録完了！
+        </MuiAlert>
+      </Snackbar>
+      <Snackbar open={failOpen} autoHideDuration={3000} onClose={handleClose}>
+        <MuiAlert elevation={6} variant="filled" severity="error">
+          登録失敗！
+        </MuiAlert>
+      </Snackbar>
       <Box p={1}>
         <Grid
           container
