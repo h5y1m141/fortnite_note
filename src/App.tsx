@@ -12,32 +12,34 @@ const App: React.VFC = () => {
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
-        <UserProvider>
-          <Box p={1}>
-            <Router>
-              <ApplicationLayout>
-                <Grid
-                  container
-                  direction="row"
-                  justify="flex-start"
-                  alignItems="flex-start"
-                >
-                  <Grid item xs={12}>
-                    <Switch>
-                      <Route path="/admin/notes/new">
+        <Box p={1}>
+          <Router>
+            <Grid
+              container
+              direction="row"
+              justify="flex-start"
+              alignItems="flex-start"
+            >
+              <Grid item xs={12}>
+                <Switch>
+                  <Route path="/admin/notes/new">
+                    <UserProvider>
+                      <ApplicationLayout>
                         <NewNote />
-                      </Route>
-                      <Route path="/admin/sign_in">
-                        <SignIn />
-                      </Route>
-                      <Route path="/"></Route>
-                    </Switch>
-                  </Grid>
-                </Grid>
-              </ApplicationLayout>
-            </Router>
-          </Box>
-        </UserProvider>
+                      </ApplicationLayout>
+                    </UserProvider>
+                  </Route>
+                  <Route path="/sign_in">
+                    <SignIn />
+                  </Route>
+                  <Route path="/">
+                    <h3>home</h3>
+                  </Route>
+                </Switch>
+              </Grid>
+            </Grid>
+          </Router>
+        </Box>
       </ThemeProvider>
     </div>
   )

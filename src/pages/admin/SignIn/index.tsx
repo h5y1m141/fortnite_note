@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
+import { Redirect } from 'react-router-dom'
 import { SignInTemplate } from '../../../templates/admin/SignInTemplate'
 import {
   loginWithTwitterAccount,
@@ -6,8 +7,11 @@ import {
 } from '../../../domains/user/services'
 import { UserProfile } from '../../../domains/user/models'
 import firebase from '../../../domains/Firebase'
+import { UserStateContext } from '../../../components/UserStateContext'
 
 export const SignIn: React.VFC = () => {
+  const [, setState] = useContext(UserStateContext)
+  const [isSignIn, setIsSignIn] = useState(false)
   const onSubmit = async () => {
     const resopnse = await loginWithTwitterAccount()
     if (resopnse.user) {
@@ -24,9 +28,17 @@ export const SignIn: React.VFC = () => {
           createdDate: firebase.firestore.FieldValue.serverTimestamp(),
         }
         await createUserProfile(params, resopnse.user.uid)
-        console.log(userProfile)
+        setState({
+          userID: userProfile.uid,
+          displayName: userProfile.displayName || '',
+        })
+        setIsSignIn(true)
       }
     }
+  }
+
+  if (isSignIn) {
+    return <Redirect to="/admin/notes/new" />
   }
 
   return (

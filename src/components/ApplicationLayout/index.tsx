@@ -21,12 +21,15 @@ export const ApplicationLayout: React.VFC<Props> = ({ children }) => {
       >
         <div className={classes.drawer}>
           <Link className={classes.link} to="/admin/notes/new">
-            <ListItem button>ノートを作成</ListItem>
-          </Link>
-          <Link className={classes.link} to="/admin/notes/new">
             <ListItem button>ノート一覧</ListItem>
           </Link>
-          <Link className={classes.link} to="/admin/sign_in">
+          <Link className={classes.link} to="/admin/notes/new">
+            <ListItem button>ノートを作成</ListItem>
+          </Link>
+          <Link
+            className={classes.link}
+            to="/admin/sensitivity_setting_notes/new"
+          >
             <ListItem button>感度を記録</ListItem>
           </Link>
         </div>

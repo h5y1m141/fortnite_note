@@ -2,7 +2,14 @@ import React, { useState, SyntheticEvent, useEffect } from 'react'
 import { convertFromRaw, convertToRaw, EditorState } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
-import { Grid, Button, makeStyles, Box, Snackbar } from '@material-ui/core'
+import {
+  Grid,
+  Button,
+  makeStyles,
+  Box,
+  Snackbar,
+  Typography,
+} from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
 
 type Props = {
@@ -46,7 +53,9 @@ export const NewNoteTemplate: React.VFC<Props> = ({
 
   return (
     <>
-      <h3>新規ノート作成</h3>
+      <Typography component="h3" variant="h3">
+        新規ノート作成
+      </Typography>
       <Snackbar
         open={successOpen}
         autoHideDuration={3000}
