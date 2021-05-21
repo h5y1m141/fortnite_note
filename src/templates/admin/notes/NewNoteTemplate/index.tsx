@@ -1,5 +1,5 @@
 import React, { useState, SyntheticEvent, useEffect } from 'react'
-import { convertFromRaw, convertToRaw, EditorState } from 'draft-js'
+import { convertToRaw } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import {
@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
-
+import { useEditorState } from './useEditorState'
 type Props = {
   onSubmit: (data: any) => void
   isNoteCreated: boolean
@@ -24,18 +24,11 @@ export const NewNoteTemplate: React.VFC<Props> = ({
   isNoteCreateionFailed,
 }) => {
   const classes = useStyles()
-  const initialData = convertFromRaw({
-    entityMap: {},
-    blocks: [],
-  })
-  const initialState = EditorState.createWithContent(initialData)
-  const [editorState, setEditorState] = useState(initialState)
+
+  const { editorState, onChange } = useEditorState()
   const [successOpen, setSuccessOpen] = useState(isNoteCreated)
   const [failOpen, setFailOpen] = useState(isNoteCreateionFailed)
 
-  const onChange = (value: EditorState) => {
-    setEditorState(value)
-  }
   const handleClose = (event: SyntheticEvent<any, Event>, reason: any) => {
     setSuccessOpen(false)
     setFailOpen(false)
