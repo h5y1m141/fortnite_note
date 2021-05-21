@@ -4,6 +4,7 @@ import { Grid, Box, ThemeProvider } from '@material-ui/core'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { theme } from './styles/theme'
 import { NewNote } from './pages/admin/notes/NewNote'
+import { NewSensitivitySetting } from './pages/admin/sensitivity_settings/NewSensitivitySetting'
 import { NoteList } from './pages/admin/notes/index'
 import { SignIn } from './pages/admin/SignIn'
 import { UserProvider } from './components/UserStateContext'
@@ -24,16 +25,17 @@ const App: React.VFC = () => {
               <Grid item xs={12}>
                 <Switch>
                   <UserProvider>
-                    <Route path="/admin/notes/new">
-                      <ApplicationLayout>
+                    <ApplicationLayout>
+                      <Route path="/admin/notes/new">
                         <NewNote />
-                      </ApplicationLayout>
-                    </Route>
-                    <Route path="/admin/notes/list">
-                      <ApplicationLayout>
+                      </Route>
+                      <Route path="/admin/notes/list">
                         <NoteList />
-                      </ApplicationLayout>
-                    </Route>
+                      </Route>
+                      <Route path="/admin/sensitivity_setting_notes/new">
+                        <NewSensitivitySetting />
+                      </Route>
+                    </ApplicationLayout>
                   </UserProvider>
                   <Route path="/sign_in">
                     <SignIn />
