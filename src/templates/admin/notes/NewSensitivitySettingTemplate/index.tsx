@@ -11,24 +11,13 @@ type Props = {
   isSensitivitySettingCreated: boolean
   isSensitivitySettingCreateionFailed: boolean
 }
-type Inputs = {
-  buildModeSensitivity: number // 建築感度
-  editModeSensitivity: number // 編集感度
-  lookHorizontalSpeed: number //水平感度
-  lookVerticalSpeed: number //垂直感度
-  turningHorizontalBoost: number // 水平ブースト
-  turningVerticalBoost: number // 垂直ブースト
-  adsLookHorizontalSpeed: number //ADS水平感度
-  adsLookVerticalSpeed: number //ADS垂直感度
-  adsTurningHorizontalBoost: number // ADS水平ブースト
-  adsTurningVerticalBoost: number // ADS垂直ブースト
-}
+
 export const NewSensitivitySettingTemplate: React.VFC<Props> = ({
   onSubmit,
   isSensitivitySettingCreated,
   isSensitivitySettingCreateionFailed,
 }) => {
-  const { control, handleSubmit } = useForm<Inputs>()
+  const { control, handleSubmit } = useForm<SensitivitySetting>()
   const [buildModeSensitivity, setBuildModeSensitivity] = useState(1.0)
   const [editModeSensitivity, setEditModeSensitivity] = useState(1.0)
   const [lookHorizontalSpeed, setLookHorizontalSpeed] = useState(20)

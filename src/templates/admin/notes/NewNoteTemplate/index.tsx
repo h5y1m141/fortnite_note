@@ -5,15 +5,20 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import { Grid, Button, makeStyles, Box, Typography } from '@material-ui/core'
 
 import { useEditorState } from './useEditorState'
+import { SimpleModal } from './SimpleModal'
 import { FortniteNoteAlert } from '../../../../components/FortniteNoteAlert'
+import { NoteContent } from '../../../../domains/note/models'
+
 type Props = {
   onSubmit: (data: any) => void
+  onClickCreateTemplate: (title: string, data: any) => void
   isNoteCreated: boolean
   isNoteCreateionFailed: boolean
 }
 
 export const NewNoteTemplate: React.VFC<Props> = ({
   onSubmit,
+  onClickCreateTemplate,
   isNoteCreated,
   isNoteCreateionFailed,
 }) => {
@@ -24,6 +29,13 @@ export const NewNoteTemplate: React.VFC<Props> = ({
     event.preventDefault()
     const rawEditorData = convertToRaw(editorState.getCurrentContent())
     onSubmit(rawEditorData)
+  }
+
+  const onHandleCreateTemplate = (title: string) => {
+    const rawEditorData = convertToRaw(editorState.getCurrentContent())
+
+    console.log(rawEditorData)
+    onClickCreateTemplate(title, rawEditorData)
   }
 
   return (
@@ -44,9 +56,10 @@ export const NewNoteTemplate: React.VFC<Props> = ({
           alignItems="flex-end"
         >
           <Grid item>
-            <Button variant="contained" color={'secondary'}>
-              テンプレートを登録
-            </Button>
+            <SimpleModal
+              buttonLabel="テンプレートとして登録"
+              onClickCreateTemplate={onHandleCreateTemplate}
+            />
           </Grid>
           <Grid item>
             <Box p={1} />
