@@ -4,6 +4,8 @@ import { Typography, Box, Button, Grid, makeStyles } from '@material-ui/core'
 import { SensitivityInput } from './SensitivityInput'
 import { SensitivitySlider } from './SensitivitySlider'
 import { SensitivitySetting } from '../../../../domains/sensitivity_setting/models'
+import { FortniteNoteAlert } from '../../../../components/FortniteNoteAlert'
+
 type Props = {
   onSubmit: (data: any) => void
   isSensitivitySettingCreated: boolean
@@ -63,6 +65,10 @@ export const NewSensitivitySettingTemplate: React.VFC<Props> = ({
       <Typography component="h3" variant="h3">
         感度設定メモ
       </Typography>
+      <FortniteNoteAlert
+        isCreated={isSensitivitySettingCreated}
+        isFailed={isSensitivitySettingCreateionFailed}
+      />
       <form onSubmit={handleSubmit(sendData)}>
         <Box p={2}>
           <Grid

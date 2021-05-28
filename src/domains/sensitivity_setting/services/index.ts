@@ -12,7 +12,7 @@ export const createSensitivitySetting = async (
   }
   const response = await firebase
     .firestore()
-    .collection(`sensitivity_settings/${uid}/details`)
+    .collection(`sensitivity_settings/${uid}/records`)
     .add(params)
   return response
 }
