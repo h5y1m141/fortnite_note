@@ -1,17 +1,11 @@
-import React, { useState, SyntheticEvent, useEffect } from 'react'
+import React from 'react'
 import { convertToRaw } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
-import {
-  Grid,
-  Button,
-  makeStyles,
-  Box,
-  Snackbar,
-  Typography,
-} from '@material-ui/core'
-import MuiAlert from '@material-ui/lab/Alert'
+import { Grid, Button, makeStyles, Box, Typography } from '@material-ui/core'
+
 import { useEditorState } from './useEditorState'
+import { FortniteNoteAlert } from '../../../../components/FortniteNoteAlert'
 type Props = {
   onSubmit: (data: any) => void
   isNoteCreated: boolean
@@ -24,45 +18,24 @@ export const NewNoteTemplate: React.VFC<Props> = ({
   isNoteCreateionFailed,
 }) => {
   const classes = useStyles()
-
   const { editorState, onChange } = useEditorState()
-  const [successOpen, setSuccessOpen] = useState(isNoteCreated)
-  const [failOpen, setFailOpen] = useState(isNoteCreateionFailed)
 
-  const handleClose = (event: SyntheticEvent<any, Event>, reason: any) => {
-    setSuccessOpen(false)
-    setFailOpen(false)
-  }
   const onHandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const rawEditorData = convertToRaw(editorState.getCurrentContent())
     onSubmit(rawEditorData)
   }
 
-  useEffect(() => {
-    setSuccessOpen(isNoteCreated)
-    setFailOpen(isNoteCreateionFailed)
-  }, [isNoteCreated, isNoteCreateionFailed])
-
   return (
     <>
       <Typography component="h3" variant="h3">
         新規ノート作成
       </Typography>
-      <Snackbar
-        open={successOpen}
-        autoHideDuration={3000}
-        onClose={handleClose}
-      >
-        <MuiAlert elevation={6} variant="filled">
-          登録完了！
-        </MuiAlert>
-      </Snackbar>
-      <Snackbar open={failOpen} autoHideDuration={3000} onClose={handleClose}>
-        <MuiAlert elevation={6} variant="filled" severity="error">
-          登録失敗！
-        </MuiAlert>
-      </Snackbar>
+      <FortniteNoteAlert
+        isCreated={isNoteCreated}
+        isFailed={isNoteCreateionFailed}
+      />
+
       <Box p={1}>
         <Grid
           container
