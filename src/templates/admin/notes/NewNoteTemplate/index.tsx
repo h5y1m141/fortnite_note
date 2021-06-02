@@ -1,15 +1,17 @@
-import React from 'react'
-import { convertToRaw } from 'draft-js'
+import React, { useState } from 'react'
+import { convertToRaw, convertFromRaw, EditorState } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import { Grid, Button, makeStyles, Box, Typography } from '@material-ui/core'
 
 import { useEditorState } from './useEditorState'
-import { SimpleModal } from './SimpleModal'
+import { CreateTemplateModal } from './CreateTemplateModal'
+import { FetchTemplateModal } from './FetchTemplateModal'
 import { FortniteNoteAlert } from '../../../../components/FortniteNoteAlert'
-import { NoteContent } from '../../../../domains/note/models'
+import { PageData } from '../../../../domains/note/models'
 
 type Props = {
+  noteTemplates: PageData[]
   onSubmit: (data: any) => void
   onClickCreateTemplate: (title: string, data: any) => void
   isNoteCreated: boolean
@@ -17,6 +19,7 @@ type Props = {
 }
 
 export const NewNoteTemplate: React.VFC<Props> = ({
+  noteTemplates,
   onSubmit,
   onClickCreateTemplate,
   isNoteCreated,
@@ -24,18 +27,38 @@ export const NewNoteTemplate: React.VFC<Props> = ({
 }) => {
   const classes = useStyles()
   const { editorState, onChange } = useEditorState()
+  const [isCreateModalClose, setIsCreateModalClose] = useState(false)
+  const [isFetchModalClose, setIsFetchModalClose] = useState(false)
 
   const onHandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const rawEditorData = convertToRaw(editorState.getCurrentContent())
-    onSubmit(rawEditorData)
+    onSubmit(rawEditorData.entityMap)
+    setIsCreateModalClose(false)
   }
 
   const onHandleCreateTemplate = (title: string) => {
     const rawEditorData = convertToRaw(editorState.getCurrentContent())
-
-    console.log(rawEditorData)
     onClickCreateTemplate(title, rawEditorData)
+    setIsCreateModalClose(false)
+  }
+
+  const onHandleLoadTemplate = (event: any) => {
+    const element = event.target
+    const templateID = element.getAttribute('data-id')
+    const item = noteTemplates.find((template) => {
+      return template.id === templateID
+    })
+    if (item) {
+      const state = EditorState.createWithContent(
+        convertFromRaw({
+          entityMap: {},
+          blocks: item?.note.blocks,
+        })
+      )
+      onChange(state)
+      setIsFetchModalClose(true)
+    }
   }
 
   return (
@@ -56,18 +79,22 @@ export const NewNoteTemplate: React.VFC<Props> = ({
           alignItems="flex-end"
         >
           <Grid item>
-            <SimpleModal
+            <CreateTemplateModal
               buttonLabel="テンプレートとして登録"
               onClickCreateTemplate={onHandleCreateTemplate}
+              isCloseModal={isCreateModalClose}
             />
           </Grid>
           <Grid item>
             <Box p={1} />
           </Grid>
           <Grid item>
-            <Button variant="contained" color={'secondary'}>
-              テンプレートを呼び出す
-            </Button>
+            <FetchTemplateModal
+              noteTemplates={noteTemplates}
+              buttonLabel="テンプレートを呼び出す"
+              onClick={onHandleLoadTemplate}
+              isCloseModal={isFetchModalClose}
+            />
           </Grid>
         </Grid>
       </Box>

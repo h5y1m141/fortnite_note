@@ -1,13 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import {
-  Grid,
-  Button,
-  makeStyles,
-  Input,
-  Typography,
-  Modal,
-} from '@material-ui/core'
+import { makeStyles, Input, Typography, Button, Modal } from '@material-ui/core'
 
 const detectModalStyle = () => {
   const top = 10
@@ -23,17 +16,18 @@ const detectModalStyle = () => {
 type Props = {
   buttonLabel: string
   onClickCreateTemplate: (data: any) => void
+  isCloseModal: boolean
 }
 
-export const SimpleModal: React.VFC<Props> = ({
+export const CreateTemplateModal: React.VFC<Props> = ({
   buttonLabel,
   onClickCreateTemplate,
+  isCloseModal,
 }) => {
   const classes = useStyles()
-  const [open, setOpen] = useState(false)
   const [title, setTitle] = useState('')
   const [modalStyle] = useState(detectModalStyle)
-  const { handleSubmit } = useForm()
+  const [open, setOpen] = useState(false)
   const handleOpen = () => {
     setOpen(true)
   }
@@ -41,6 +35,8 @@ export const SimpleModal: React.VFC<Props> = ({
   const handleClose = () => {
     setOpen(false)
   }
+
+  const { handleSubmit } = useForm()
 
   const onSubmit = () => {
     if (title !== '') {
@@ -51,19 +47,13 @@ export const SimpleModal: React.VFC<Props> = ({
     setTitle(event.target.value)
   }
 
-  const body = (
-    <div style={modalStyle} className={classes.paper}>
-      <Typography id="simple-modal-title" component="h5" variant="h5">
-        テンプレート
-      </Typography>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* register your input into the hook by invoking the "register" function */}
-        <Input value={title} onChange={handleInputChange} />
-        <input type="submit" />
-      </form>
-      <Typography component="p">テンプレートとして登録する</Typography>
-    </div>
-  )
+  useEffect(() => {
+    console.log(`isCloseModal is ${isCloseModal}`)
+    if (isCloseModal) {
+      setOpen(false)
+    }
+  }, [isCloseModal])
+
   return (
     <>
       <Button variant="contained" color="secondary" onClick={handleOpen}>
@@ -75,7 +65,17 @@ export const SimpleModal: React.VFC<Props> = ({
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        {body}
+        <div style={modalStyle} className={classes.paper}>
+          <Typography id="simple-modal-title" component="h5" variant="h5">
+            テンプレート
+          </Typography>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {/* register your input into the hook by invoking the "register" function */}
+            <Input value={title} onChange={handleInputChange} />
+            <input type="submit" />
+          </form>
+          <Typography component="p">テンプレートとして登録</Typography>
+        </div>
       </Modal>
     </>
   )
