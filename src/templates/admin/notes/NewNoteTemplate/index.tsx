@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { convertToRaw, convertFromRaw, EditorState } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
@@ -27,20 +27,16 @@ export const NewNoteTemplate: React.VFC<Props> = ({
 }) => {
   const classes = useStyles()
   const { editorState, onChange } = useEditorState()
-  const [isCreateModalClose, setIsCreateModalClose] = useState(false)
-  const [isFetchModalClose, setIsFetchModalClose] = useState(false)
 
   const onHandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const rawEditorData = convertToRaw(editorState.getCurrentContent())
     onSubmit(rawEditorData.entityMap)
-    setIsCreateModalClose(false)
   }
 
   const onHandleCreateTemplate = (title: string) => {
     const rawEditorData = convertToRaw(editorState.getCurrentContent())
     onClickCreateTemplate(title, rawEditorData)
-    setIsCreateModalClose(false)
   }
 
   const onHandleLoadTemplate = (event: any) => {
@@ -57,7 +53,6 @@ export const NewNoteTemplate: React.VFC<Props> = ({
         })
       )
       onChange(state)
-      setIsFetchModalClose(true)
     }
   }
 
@@ -82,7 +77,6 @@ export const NewNoteTemplate: React.VFC<Props> = ({
             <CreateTemplateModal
               buttonLabel="テンプレートとして登録"
               onClickCreateTemplate={onHandleCreateTemplate}
-              isCloseModal={isCreateModalClose}
             />
           </Grid>
           <Grid item>
@@ -93,7 +87,6 @@ export const NewNoteTemplate: React.VFC<Props> = ({
               noteTemplates={noteTemplates}
               buttonLabel="テンプレートを呼び出す"
               onClick={onHandleLoadTemplate}
-              isCloseModal={isFetchModalClose}
             />
           </Grid>
         </Grid>

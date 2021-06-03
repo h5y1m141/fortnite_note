@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
   makeStyles,
   Typography,
@@ -25,14 +25,12 @@ type Props = {
   noteTemplates: PageData[]
   buttonLabel: string
   onClick: (data: any) => void
-  isCloseModal: boolean
 }
 
 export const FetchTemplateModal: React.VFC<Props> = ({
   noteTemplates,
   buttonLabel,
   onClick,
-  isCloseModal,
 }) => {
   const classes = useStyles()
   const [modalStyle] = useState(detectModalStyle)
@@ -44,13 +42,10 @@ export const FetchTemplateModal: React.VFC<Props> = ({
   const handleClose = () => {
     setOpen(false)
   }
-
-  useEffect(() => {
-    console.log(`isCloseModal is ${isCloseModal}`)
-    if (isCloseModal) {
-      setOpen(false)
-    }
-  }, [isCloseModal])
+  const onHandleClose = (data: any) => {
+    onClick(data)
+    handleClose()
+  }
 
   return (
     <>
@@ -75,7 +70,7 @@ export const FetchTemplateModal: React.VFC<Props> = ({
                     button
                     data-id={noteTemplate.id}
                     key={noteTemplate.id}
-                    onClick={onClick}
+                    onClick={onHandleClose}
                   >
                     {noteTemplate.title}
                   </ListItem>

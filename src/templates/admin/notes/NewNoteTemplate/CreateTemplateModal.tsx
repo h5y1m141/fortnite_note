@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { makeStyles, Input, Typography, Button, Modal } from '@material-ui/core'
 
@@ -16,13 +16,11 @@ const detectModalStyle = () => {
 type Props = {
   buttonLabel: string
   onClickCreateTemplate: (data: any) => void
-  isCloseModal: boolean
 }
 
 export const CreateTemplateModal: React.VFC<Props> = ({
   buttonLabel,
   onClickCreateTemplate,
-  isCloseModal,
 }) => {
   const classes = useStyles()
   const [title, setTitle] = useState('')
@@ -41,18 +39,13 @@ export const CreateTemplateModal: React.VFC<Props> = ({
   const onSubmit = () => {
     if (title !== '') {
       onClickCreateTemplate(title)
+      handleClose()
     }
+    handleClose()
   }
   const handleInputChange = (event: any) => {
     setTitle(event.target.value)
   }
-
-  useEffect(() => {
-    console.log(`isCloseModal is ${isCloseModal}`)
-    if (isCloseModal) {
-      setOpen(false)
-    }
-  }, [isCloseModal])
 
   return (
     <>
