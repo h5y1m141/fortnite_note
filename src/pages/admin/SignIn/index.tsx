@@ -31,6 +31,7 @@ export const SignIn: React.VFC = () => {
         setState({
           userID: userProfile.uid,
           displayName: userProfile.displayName || '',
+          photoURL: userProfile.photoURL || '',
         })
         setIsSignIn(true)
       }

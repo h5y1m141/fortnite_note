@@ -37,6 +37,7 @@ export const Header: React.VFC<Props> = ({ pictureURL }) => {
         setState({
           userID: '',
           displayName: '',
+          photoURL: '',
         })
         setIsSignOut(true)
       })

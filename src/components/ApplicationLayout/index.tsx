@@ -1,16 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Drawer, ListItem, makeStyles } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { Header } from './Header'
+import { UserStateContext } from '../../components/UserStateContext'
+
 type Props = {
   children: React.ReactNode
 }
 
 export const ApplicationLayout: React.VFC<Props> = ({ children }) => {
+  const [state] = useContext(UserStateContext)
   const classes = useStyles()
   return (
     <div>
-      <Header pictureURL="https://pbs.twimg.com/profile_images/814133757/face_normal.jpg" />
+      <Header pictureURL={state.photoURL} />
       <Drawer
         variant="persistent"
         anchor="left"

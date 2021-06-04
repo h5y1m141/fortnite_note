@@ -4,11 +4,13 @@ import { useCurrentUser, fetchUserProfile } from '../../domains/user/services'
 export type UserState = {
   userID: string
   displayName: string
+  photoURL: string
 }
 
 const initialState: UserState = {
   userID: '',
   displayName: '',
+  photoURL: '',
 }
 
 export const UserStateContext = createContext<
@@ -24,6 +26,7 @@ export const UserProvider: React.FC = ({ children }) => {
         const userProfile = await fetchUserProfile(`${userID}`)
         setState({
           userID,
+          photoURL: userProfile.photoURL || '',
           displayName: userProfile.displayName,
         })
       }
