@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Drawer, ListItem, makeStyles } from '@material-ui/core'
+import { Container, Drawer, ListItem, makeStyles } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { Header } from './Header'
 import { UserStateContext } from '../../components/UserStateContext'
@@ -13,31 +13,33 @@ export const ApplicationLayout: React.VFC<Props> = ({ children }) => {
   const classes = useStyles()
   return (
     <div>
-      <Header pictureURL={state.photoURL} />
-      <Drawer
-        variant="persistent"
-        anchor="left"
-        open={true}
-        ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
-        }}
-      >
-        <div className={classes.drawer}>
-          <Link className={classes.link} to="/admin/notes/list">
-            <ListItem button>ノート一覧</ListItem>
-          </Link>
-          <Link className={classes.link} to="/admin/notes/new">
-            <ListItem button>ノートを作成</ListItem>
-          </Link>
-          <Link
-            className={classes.link}
-            to="/admin/sensitivity_setting_notes/new"
-          >
-            <ListItem button>感度を記録</ListItem>
-          </Link>
-        </div>
-      </Drawer>
-      <main className={classes.content}>{children}</main>
+      <Container maxWidth="lg">
+        <Header pictureURL={state.photoURL} />
+        <Drawer
+          variant="persistent"
+          anchor="left"
+          open={true}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+        >
+          <div className={classes.drawer}>
+            <Link className={classes.link} to="/admin/notes/list">
+              <ListItem button>ノート一覧</ListItem>
+            </Link>
+            <Link className={classes.link} to="/admin/notes/new">
+              <ListItem button>ノートを作成</ListItem>
+            </Link>
+            <Link
+              className={classes.link}
+              to="/admin/sensitivity_setting_notes/new"
+            >
+              <ListItem button>感度を記録</ListItem>
+            </Link>
+          </div>
+        </Drawer>
+        <main className={classes.content}>{children}</main>
+      </Container>
     </div>
   )
 }

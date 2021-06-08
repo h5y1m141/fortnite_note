@@ -7,6 +7,7 @@ import { Grid, Button, makeStyles, Box, Typography } from '@material-ui/core'
 import { useEditorState } from './useEditorState'
 import { CreateTemplateModal } from './CreateTemplateModal'
 import { FetchTemplateModal } from './FetchTemplateModal'
+import { ConfirmNoteModal } from './ConfirmNoteModal'
 import { FortniteNoteAlert } from '../../../../components/FortniteNoteAlert'
 import { PageData } from '../../../../domains/note/models'
 
@@ -115,6 +116,13 @@ export const NewNoteTemplate: React.VFC<Props> = ({
             <Button variant="contained" type="submit" color="primary">
               登録する
             </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <ConfirmNoteModal
+              buttonLabel="確認"
+              editorState={editorState}
+              onClickCreateTemplate={onHandleCreateTemplate}
+            />
           </Grid>
         </Grid>
       </form>
