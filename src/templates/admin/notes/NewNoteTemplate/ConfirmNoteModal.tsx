@@ -3,7 +3,6 @@ import { EditorState } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import { makeStyles, Button, Modal } from '@material-ui/core'
 import { useScreenshot } from 'use-react-screenshot'
-import { storage } from '../../../../domains/Firebase'
 
 const detectModalStyle = () => {
   const top = 10
@@ -18,13 +17,13 @@ const detectModalStyle = () => {
 type Props = {
   buttonLabel: string
   editorState: EditorState
-  onClickCreateTemplate: (data: any) => void
+  onHandleSubmit: (data: any) => void
 }
 
 export const ConfirmNoteModal: React.VFC<Props> = ({
   buttonLabel,
   editorState,
-  onClickCreateTemplate,
+  onHandleSubmit,
 }) => {
   const classes = useStyles()
   const [modalStyle] = useState(detectModalStyle)
@@ -43,21 +42,26 @@ export const ConfirmNoteModal: React.VFC<Props> = ({
   const handleClick = async () => {
     console.log('handleclick')
     takeScreenshot(ref.current)
+    // console.log(image)
+    // if (image) {
+    //   onHandleSubmit(image)
+    // }
   }
 
   useEffect(() => {
     async function uploadImage() {
       if (image) {
-        const storageReference = storage.ref()
-        const uploadDirectoryStorageReference =
-          storageReference.child('images/sample1.png')
-        // NOTE: base64エンコードされた文字列をアップロードするには以下公式情報を参照
-        // https://firebase.google.com/docs/storage/web/upload-files?hl=ja
-        const response = await uploadDirectoryStorageReference.putString(
-          image,
-          'data_url'
-        )
-        console.log(response)
+        // const storageReference = storage.ref()
+        // const uploadDirectoryStorageReference =
+        //   storageReference.child('images/sample1.png')
+        // // NOTE: base64エンコードされた文字列をアップロードするには以下公式情報を参照
+        // // https://firebase.google.com/docs/storage/web/upload-files?hl=ja
+        // const response = await uploadDirectoryStorageReference.putString(
+        //   image,
+        //   'data_url'
+        // )
+        // console.log(response)
+        onHandleSubmit(image)
       }
     }
     uploadImage()

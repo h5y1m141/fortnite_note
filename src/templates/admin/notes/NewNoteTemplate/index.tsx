@@ -2,7 +2,7 @@ import React from 'react'
 import { convertToRaw, convertFromRaw, EditorState } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
-import { Grid, Button, makeStyles, Box, Typography } from '@material-ui/core'
+import { Grid, makeStyles, Box, Typography } from '@material-ui/core'
 
 import { useEditorState } from './useEditorState'
 import { CreateTemplateModal } from './CreateTemplateModal'
@@ -13,7 +13,7 @@ import { PageData } from '../../../../domains/note/models'
 
 type Props = {
   noteTemplates: PageData[]
-  onSubmit: (data: any) => void
+  onSubmit: (data: any, base64encodedImage: string) => void
   onClickCreateTemplate: (title: string, data: any) => void
   isNoteCreated: boolean
   isNoteCreateionFailed: boolean
@@ -29,10 +29,9 @@ export const NewNoteTemplate: React.VFC<Props> = ({
   const classes = useStyles()
   const { editorState, onChange } = useEditorState()
 
-  const onHandleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const onHandleSubmit = (base64encodedImage: string) => {
     const rawEditorData = convertToRaw(editorState.getCurrentContent())
-    onSubmit(rawEditorData.entityMap)
+    onSubmit(rawEditorData, base64encodedImage)
   }
 
   const onHandleCreateTemplate = (title: string) => {
@@ -92,7 +91,7 @@ export const NewNoteTemplate: React.VFC<Props> = ({
           </Grid>
         </Grid>
       </Box>
-      <form onSubmit={onHandleSubmit}>
+      <form>
         <Grid
           container
           direction="row"
@@ -113,15 +112,10 @@ export const NewNoteTemplate: React.VFC<Props> = ({
             </div>
           </Grid>
           <Grid item xs={12}>
-            <Button variant="contained" type="submit" color="primary">
-              登録する
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
             <ConfirmNoteModal
               buttonLabel="確認"
               editorState={editorState}
-              onClickCreateTemplate={onHandleCreateTemplate}
+              onHandleSubmit={onHandleSubmit}
             />
           </Grid>
         </Grid>

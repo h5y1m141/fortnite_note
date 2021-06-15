@@ -3,6 +3,7 @@ import { NewNoteTemplate } from '../../../templates/admin/notes/NewNoteTemplate'
 import { createNote, createNoteTemplate } from '../../../domains/note/services'
 import { NoteContent, PageData } from '../../../domains/note/models'
 import { fetchNoteTemplates } from '../../../domains/note/services'
+import { storage } from '../../../domains/Firebase'
 import { UserStateContext } from '../../../components/UserStateContext'
 
 export const NewNote: React.VFC = () => {
@@ -20,9 +21,19 @@ export const NewNote: React.VFC = () => {
     fetchData()
   }, [])
 
-  const onSubmit = async (data: NoteContent) => {
+  const onSubmit = async (data: NoteContent, base64encodedImage: string) => {
     const note = await createNote(data, state.userID)
-    note ? setIsNoteCreated(true) : setIsNoteCreateionFailed(true)
+    const storageReference = storage.ref()
+    const uploadDirectoryStorageReference = storageReference.child(
+      `images/${note.id}.png`
+    )
+    // NOTE: base64エンコードされた文字列をアップロードするには以下公式情報を参照
+    // https://firebase.google.com/docs/storage/web/upload-files?hl=ja
+    const response = await uploadDirectoryStorageReference.putString(
+      base64encodedImage,
+      'data_url'
+    )
+    response ? setIsNoteCreated(true) : setIsNoteCreateionFailed(true)
   }
   const onClickCreateTemplate = async (title: string, data: NoteContent) => {
     const noteTemplate = await createNoteTemplate(data, state.userID, title)
